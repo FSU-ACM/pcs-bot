@@ -1,3 +1,5 @@
+import os
+
 #import discord
 from discord.ext import commands
 import logging
@@ -14,6 +16,8 @@ handler.setFormatter(logging.Formatter(
 logger.addHandler(handler)
 '''
 
+BOT_TOKEN = os.environ.get('BOT_TOKEN', None)
+
 bot = commands.Bot(command_prefix='$')
 
 
@@ -22,12 +26,4 @@ async def test(ctx, arg):
     await ctx.send(arg)
 
 
-@bot.command()
-async def clear_announcements(ctx, channel_id):
-    guild = ctx.guild.get_channel(channel_id)
-    print(guild)
-    # channel.send('In announcements')
-
-    await ctx.send(guild)
-
-bot.run('OTYxNTEzMzk4MTUwMDA0ODA2.Yk6FIg.Xs74GaW6h5pf2B2Qgb1_c9YKEy4')
+bot.run(BOT_TOKEN)
