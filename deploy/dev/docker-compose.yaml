@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+    pcs-bot:
+        build:
+            context: ../..
+            dockerfile: Dockerfile
+        image: pcs-bot:dev 
+        environment:
+            - BOT_TOKEN=server_bot_token
