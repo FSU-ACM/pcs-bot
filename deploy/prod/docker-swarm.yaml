@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+    pcs-bot:
+        image: acmfsu/pcs-bot:latest
+        environment:
+            BOT_TOKEN: #server bot token
+            GUILD_TOKEN: # guild id
+            LOWER_TOKEN: # role id
+            UPPER_TOKEN: # role id
+        deploy:
+            update_config:
+                delay: 5s
+                failure_action: rollback
