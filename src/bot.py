@@ -101,4 +101,37 @@ async def remove_role(ctx, user_ids, division):
         user = guild.get_member_named(u)
         await user.remove_roles(role)
 
+@bot.command()
+@commands.has_permissions(manage_roles=True, ban_members=True)
+async def add_role(ctx, user_ids, division):
+    """
+    Add the LFG Roles to Users, LFG_Upper or LFG_Lower
+
+    Syntax:
+        $add_role <user_ids> <"LFG_Lower"/"LFG_Upper"> 
+    
+    Parameters:
+        ctx : Context Class Object
+            Represents the context in which a command is being invoked under.
+        user_ids: comma separated string, converted to List
+            List of comma separate user IDS to add the LFG role to.
+            Format of User ID : Name#1234
+        division : String
+            Determine which role to add, either LFG_Upper or LFG_Lower
+            
+    """
+    guild = bot.get_guild(int(GUILD_TOKEN))
+    user_ids = list(user_ids.split(','))
+
+    if division == "LFG_Lower":
+        role = guild.get_role(int(LOWER_TOKEN))
+    elif division == "LFG_Upper":
+        role = guild.get_role(int(UPPER_TOKEN))
+    else:        
+        role = 404
+
+    for u in user_ids: 
+        user = guild.get_member_named(u)
+        await user.add_roles(role)
+
 bot.run(BOT_TOKEN)
