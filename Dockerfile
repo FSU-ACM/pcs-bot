@@ -1,5 +1,5 @@
 FROM gorialis/discord.py:alpine-minimal
-LABEL maintainer="ACM at FSU <contestdev@fsu.acm.org>"
+LABEL maintainer="ACM at FSU <contact@fsu.acm.org>"
 
 WORKDIR /app
 
