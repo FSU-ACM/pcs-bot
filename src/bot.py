@@ -31,7 +31,7 @@ handler.setFormatter(logging.Formatter(
     '%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
 logger.addHandler(handler)
 '''
-bot = commands.Bot(command_prefix='$', intents = intents)
+bot = commands.Bot(command_prefix='$', intents=intents, help_command=None)
 
 BOT_TOKEN = os.environ.get('BOT_TOKEN', None)
 GUILD_TOKEN = os.environ.get('GUILD_TOKEN', None)
@@ -55,11 +55,21 @@ def bot_channel_only():
             # Do the handling here or in on_command_error handler
             message = ctx.message
             await message.delete()
-            await ctx.send("INCORRECT CHANNEL")
+            await ctx.send("You do not have permission to use these commands.")
             #raise commands.CheckFailure("Channel isn't valid!")
         return True
 
     return commands.check(predicate)
+
+@bot_channel_only()
+@bot.command()
+@commands.has_permissions(manage_roles=True, ban_members=True)
+async def help(ctx):
+    """
+    Overwrites default help command.
+    """
+    await ctx.send("This bot's commands are private!")
+
 
 @bot_channel_only()
 @bot.command()
