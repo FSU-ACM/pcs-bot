@@ -47,7 +47,7 @@ LOWER_CHANNEL = "lfg-lower-division"
 # UPPER_TOKEN = os.environ.get('UPPER_TOKEN', None)
 
 ''' Specify channel name to only allow commands to occur there'''
-BOT_CHANNEL = "bot_commands"
+BOT_CHANNEL = os.environ.get('BOT_CHANNEL', "bot_commands")
 
 def bot_channel_only():
     async def predicate(ctx):
