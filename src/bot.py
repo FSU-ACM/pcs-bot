@@ -1,12 +1,16 @@
 from multiprocessing.connection import wait
 from discord.ext import commands
 from discord import Intents, utils
+import discord
 import logging
 import os
 
 intents = Intents(messages=True, guilds=True, members=True)
 
 '''
+    EMAIL:
+        TODO: 1. Verify email from discord user.
+
     ANNOUNCEMENTS
         TODO: 1. Clear all messages from pc-announcements channel
 
@@ -22,7 +26,7 @@ intents = Intents(messages=True, guilds=True, members=True)
         2. Verify permissions, delete message if wrong permissions
 '''
 logging.basicConfig(level=logging.DEBUG)
-'''
+
 logger = logging.getLogger('discord')
 logger.setLevel(logging.DEBUG)
 handler = logging.FileHandler(
@@ -30,7 +34,7 @@ handler = logging.FileHandler(
 handler.setFormatter(logging.Formatter(
     '%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
 logger.addHandler(handler)
-'''
+
 bot = commands.Bot(command_prefix='$', intents=intents, help_command=None)
 
 BOT_TOKEN = os.environ.get('BOT_TOKEN', None)
@@ -60,6 +64,31 @@ def bot_channel_only():
         return True
 
     return commands.check(predicate)
+
+
+
+@bot.event
+@bot_channel_only()
+async def on_message(message):
+    if message.author.bot:
+        ctx = await bot.get_context(message)
+ 
+        if ctx.valid:
+            args = message.content.split(" ")
+
+            if len(args) > 1:
+                args  = args[1:]
+            else:
+                args = []
+
+            await ctx.invoke(ctx.command, *args)
+            
+
+
+@bot_channel_only()
+@bot.command()
+async def test(ctx):
+    await ctx.send(f'$help')
 
 @bot_channel_only()
 @bot.command()
@@ -179,10 +208,15 @@ async def add_role(ctx, user_ids, division):
             Determine which role to add, either LFG_Upper or LFG_Lower
             
     """
+  
     guild = bot.get_guild(int(GUILD_TOKEN))
     user_ids = list(user_ids.split(','))
+    print("userids: ", user_ids)
 
     role = utils.get(guild.roles, name=division)
+
+
+    print("DIVISION: ", division)
 
     if division == UPPER:
         lfg_channel = utils.get(guild.text_channels, name=UPPER_CHANNEL)
