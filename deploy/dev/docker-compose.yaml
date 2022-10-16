@@ -7,6 +7,8 @@ services:
             dockerfile: Dockerfile
         image: pcs-bot:dev 
         environment:
-            - BOT_TOKEN=server_bot_token
+            BOT_CHANNEL: # name of command channel
+            BOT_TOKEN: # server bot token
+            GUILD_TOKEN: # guild id
         volumes:
             - ../../src:/app
