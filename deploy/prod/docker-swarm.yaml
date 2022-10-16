@@ -3,13 +3,26 @@ version: '3.8'
 services:
     pcs-bot:
         image: acmfsu/pcs-bot:latest
+        secrets:
+            - contestsuite_bot_channel_name
+            - contestsuite_discord_guild_id
+            - pcsbot_token
         environment:
-            BOT_CHANNEL: # server bot control channel
-            BOT_TOKEN: # server bot token
-            GUILD_TOKEN: # guild id
+            BOT_CHANNEL: /run/secrets/contestsuite_bot_channel_name # name of command channel
+            BOT_TOKEN: /run/secrets/pcsbot_token # server bot token
+            GUILD_TOKEN: /run/secrets/contestsuite_discord_guild_id # guild id
         deploy:
             restart_policy:
                 max_attempts: 10
             update_config:
                 delay: 5s
                 failure_action: rollback
+secrets:
+    # Discord server
+    contestsuite_discord_guild_id:
+        external: true
+    contestsuite_bot_channel_name:
+        external: true
+    # Bot guild token
+    pcsbot_token:
+        external: true
