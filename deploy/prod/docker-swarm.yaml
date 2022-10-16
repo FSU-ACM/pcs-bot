@@ -13,7 +13,9 @@ services:
             GUILD_TOKEN: /run/secrets/contestsuite_discord_guild_id # guild id
         deploy:
             restart_policy:
+                delay: 5s
                 max_attempts: 10
+                window: 60s
             update_config:
                 delay: 5s
                 failure_action: rollback
