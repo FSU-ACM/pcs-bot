@@ -5,6 +5,14 @@ import discord
 import logging
 import os
 
+
+def get_secret(key, default=None):
+    value = os.getenv(key, default)
+    if value and os.path.isfile(value):
+        with open(value) as f:
+            return f.read().strip()
+    return value
+
 intents = Intents(messages=True, guilds=True, members=True)
 
 '''
@@ -37,8 +45,8 @@ logger.addHandler(handler)
 
 bot = commands.Bot(command_prefix='$', intents=intents, help_command=None)
 
-BOT_TOKEN = os.environ.get('BOT_TOKEN', None)
-GUILD_TOKEN = os.environ.get('GUILD_TOKEN', None)
+BOT_TOKEN = get_secret('BOT_TOKEN', None)
+GUILD_TOKEN = get_secret('GUILD_TOKEN', None)
 
 LOWER = "LFG_Lower"
 UPPER = "LFG_Upper"
@@ -51,7 +59,7 @@ LOWER_CHANNEL = "lfg-lower-division"
 # UPPER_TOKEN = os.environ.get('UPPER_TOKEN', None)
 
 ''' Specify channel name to only allow commands to occur there'''
-BOT_CHANNEL = os.environ.get('BOT_CHANNEL', "bot_commands")
+BOT_CHANNEL = get_secret('BOT_CHANNEL', "bot_commands")
 
 def bot_channel_only():
     async def predicate(ctx):
