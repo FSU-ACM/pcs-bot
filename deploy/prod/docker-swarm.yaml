@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-    pcs-bot:
+    bot:
         image: acmfsu/pcs-bot:latest
         secrets:
             - contestsuite_bot_channel_name
